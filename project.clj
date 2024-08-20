@@ -11,7 +11,7 @@
                  ;; [tupelo "24.06.21-SNAPSHOT"]
                  [tupelo "23.07.04"]
                  [cheshire "5.8.1"] ;; incidental
-                 ]
+                 [camel-snake-kebab "0.4.3"]]
 
   :profiles {:dev  {:dependencies [[midje "1.10.10"]]
                     :plugins      [[lein-midje "3.2.1"]
