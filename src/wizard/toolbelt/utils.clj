@@ -178,5 +178,8 @@
       true          (merge attrs-base attrs)
       (some? class) (update "class"
                             #(->> [% class] (filter some?) (str/join " ")))
-      (some? style) (update "style" deep-merge style)
-      )))
+      (some? style) (update "style" deep-merge style))))
+
+(defn current-context-class-loader
+  ([] (current-context-class-loader (Thread/currentThread)))
+  ([thread] (.getContextClassLoader thread)))
