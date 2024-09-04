@@ -191,7 +191,7 @@
     (#(if-not (map? (second %))
         (apply vector (first %) {} (drop 1 %))
         %))
-    (apply update 1 extend-fn args)))
+    (#(apply update % 1 extend-fn args))))
 
 (defn current-context-class-loader
   ([] (current-context-class-loader (Thread/currentThread)))
