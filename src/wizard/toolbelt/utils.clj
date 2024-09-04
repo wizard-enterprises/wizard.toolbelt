@@ -170,15 +170,20 @@
   (= tag (element-tag x)))
 
 (defn merge-attrs
-  [attrs-base attrs]
-  (let [class (get attrs "class")
-        style (get attrs "style")
-        attrs (dissoc attrs "class" "style")]
-    (cond-> attrs
-      true          (merge attrs-base attrs)
-      (some? class) (update "class"
-                            #(->> [% class] (filter some?) (str/join " ")))
-      (some? style) (update "style" deep-merge style))))
+  ([attrs-base attrs & more]
+   (apply
+    merge-attrs
+    (merge-attrs attrs-base attrs)
+    more))
+  ([attrs-base attrs]
+   (let [class (get attrs "class")
+         style (get attrs "style")
+         attrs (dissoc attrs "class" "style")]
+     (cond-> attrs
+       true          (merge attrs-base attrs)
+       (some? class) (update "class"
+                             #(->> [% class] (filter some?) (str/join " ")))
+       (some? style) (update "style" deep-merge style)))))
 
 (defn current-context-class-loader
   ([] (current-context-class-loader (Thread/currentThread)))

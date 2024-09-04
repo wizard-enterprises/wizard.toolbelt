@@ -8,8 +8,8 @@
   :git-dependencies []
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.132"]
-                 ;; [tupelo "24.06.21-SNAPSHOT"]
-                 [tupelo "23.07.04"]
+
+                 [tupelo "23.07.04"] ;; [tupelo "24.06.21-SNAPSHOT"]
                  [cheshire "5.8.1"] ;; incidental
                  [camel-snake-kebab "0.4.3"]]
 
