@@ -185,6 +185,14 @@
                              #(->> [% class] (filter some?) (str/join " ")))
        (some? style) (update "style" deep-merge style)))))
 
+(defn extend-attrs
+  [node extend-fn]
+  (-> node
+    (#(if-not (map? (second %))
+        (apply vector (first %) {} (drop 1 %))
+        %))
+    (update 1 extend-fn)))
+
 (defn current-context-class-loader
   ([] (current-context-class-loader (Thread/currentThread)))
   ([thread] (.getContextClassLoader thread)))
