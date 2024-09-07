@@ -196,3 +196,14 @@
 (defn current-context-class-loader
   ([] (current-context-class-loader (Thread/currentThread)))
   ([thread] (.getContextClassLoader thread)))
+
+(defn filter-kv [pred m]
+  (reduce-kv
+   #(if (pred %2 %3) (assoc %1 %2 %3) %1)
+   {} m))
+
+(defn filter-keys [pred m]
+  (filter-kv (fn [k _] (pred k)) m))
+
+(defn filter-vals [pred m]
+  (filter-kv (fn [_ v] (pred v)) m))
