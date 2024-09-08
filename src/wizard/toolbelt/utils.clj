@@ -207,3 +207,29 @@
 
 (defn filter-vals [pred m]
   (filter-kv (fn [_ v] (pred v)) m))
+
+(defmacro prepend-to-sexp [x form]
+  (if (seq? form)
+    (with-meta `(~(first form) ~x ~@(next form)) (meta form))
+    (list form x)))
+
+(defmacro if->
+  [x test then & [else]]
+  `(let [test# (prepend-to-sexp ~x ~test)
+         then# (prepend-to-sexp ~x ~then)]
+     (if test#
+       then#
+       ~(when else `(prepend-to-sexp ~x ~else)))))
+
+(defmacro append-to-sexp [form x]
+  (if (seq? form)
+    (with-meta `(~(first form) ~@(next form) ~x) (meta form))
+    (list form x)))
+
+(defmacro if->>
+  [x test then & [else]]
+  `(let [test# (append-to-sexp ~test ~x)
+         then# (append-to-sexp ~then ~x)]
+     (if test#
+       then#
+       ~(when else `(append-to-sexp ~else ~x)))))
