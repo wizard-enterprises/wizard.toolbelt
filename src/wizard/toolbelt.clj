@@ -1,7 +1,8 @@
 (ns wizard.toolbelt
   (:require [wizard.toolbelt.utils :as utils]
             tupelo.core
-            camel-snake-kebab.core))
+            camel-snake-kebab.core)
+  (:gen-class))
 
 (utils/intern-all-from *ns* 'wizard.toolbelt.utils)
 (utils/intern-all-from *ns* 'tupelo.core)

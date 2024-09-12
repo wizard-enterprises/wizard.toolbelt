@@ -1,0 +1,4 @@
+{:deps {org.clojure/clojure                 {:mvn/version "1.12.0"}
+        tupelo/tupelo                       {:mvn/version "23.07.04"}
+        cheshire/cheshire                   {:mvn/version "5.8.1"} ;; incidental
+        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}}}
