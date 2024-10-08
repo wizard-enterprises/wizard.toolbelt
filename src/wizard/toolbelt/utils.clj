@@ -22,18 +22,33 @@
   [pred & args]
   (apply (complement pred) args))
 
-(defn- intern-item-from
-  [here-ns ns name item]
-  (let [item-meta (try (meta item) (catch Exception e {}))
-        item      (deref item)]
-    (intern (ns-name here-ns)
-            (with-meta name item-meta)
-            item)))
+(defn internalise
+  {:style/indent [:defn [:form]]}
+  ([here-ns item]
+   (internalise here-ns ::nil item))
+  ([here-ns item-name item]
+   (let [item-meta (try (meta item) (catch Exception e {}))
+         item-name (if (= ::nil item-name)
+                     (fetch-in item-meta [:name])
+                     item-name)
+         item      (deref item)]
+     (intern (ns-name here-ns)
+             (with-meta item-name item-meta)
+             item))))
 
 (defn intern-all-from
-  [here-ns ns]
-  (doseq [[name val] (ns-publics ns)]
-    (intern-item-from here-ns ns name val)))
+  [here-ns there-ns]
+  (doseq [[n v] (ns-publics there-ns)]
+    (internalise here-ns n v)))
+
+(defmacro inherit-sub-ns
+  [here-ns sub-name there-ns]
+  `(let [here-name# (ns-name ~here-ns)
+         sub-name#  (-> here-name# (str "." ~sub-name) symbol)]
+     (do
+       (in-ns sub-name#)
+       (intern-all-from *ns* ~there-ns)
+       (in-ns here-name#))))
 
 (defn contains-all?
   [m & xs]
