@@ -1,6 +1,16 @@
 (ns wizard.toolbelt.utils
-  (:require [clojure.string :as str]
-            [tupelo.core :refer [append glue fetch-in drop-at]]))
+  (:use tupelo.core)
+  (:require [clojure.string :as str]))
+
+(defn insert-up-to
+  ([coll index elem]
+   (insert-up-to coll index elem nil))
+  ([coll index elem filler]
+   (insert-at
+    (if-not (> index (count coll))
+      coll
+      (glue coll (take (- index (count coll)) (repeat filler))))
+    index elem)))
 
 (defn glue+
   [& xs]
@@ -103,8 +113,9 @@
 
 (defn update-last
   [coll f & args]
-  (append (or (butlast coll) [])
-          (apply f (last coll) args)))
+  (append
+   (or (butlast coll) [])
+   (apply f (last coll) args)))
 
 (defn subtract-lists
   [l1 l2]
